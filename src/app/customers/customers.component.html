@@ -1,0 +1,138 @@
+<div class="customers-container">
+  <!-- Header -->
+  <div class="header">
+    <h2>Customers</h2>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-input-container">
+      <input 
+        type="text" 
+        placeholder="Customer Name" 
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        [disabled]="isLoading"
+        class="search-input"
+      >
+      <button class="search-btn" [disabled]="isLoading">
+        <i class="search-icon">🔍</i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Cargando clientes...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage && !isLoading" class="error-container">
+    <div class="error-message">
+      <h3>⚠️ Error</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="btn btn-retry" (click)="retryLoad()">
+        Reintentar
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!isLoading && !errorMessage" class="table-container">
+    <table class="customers-table">
+      <thead>
+        <tr>
+          <th (click)="onSort('customerName')" class="sortable">
+            Customer Name 
+            <span class="sort-arrow" [class.active]="sortColumn === 'customerName'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="onSort('lastOrderDate')" class="sortable">
+            Last Order Date
+            <span class="sort-arrow" [class.active]="sortColumn === 'lastOrderDate'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="onSort('nextPredictedOrder')" class="sortable">
+            Next Predicted Order
+            <span class="sort-arrow" [class.active]="sortColumn === 'nextPredictedOrder'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of paginatedCustomers">
+          <td>{{ customer.customerName }}</td>
+          <td>{{ customer.lastOrderDate }}</td>
+          <td>{{ customer.nextPredictedOrder }}</td>
+          <td>
+            <button 
+              class="btn btn-view-orders" 
+              (click)="onViewOrders(customer)"
+            >
+              VIEW ORDERS
+            </button>
+          </td>
+          <td>
+            <button 
+              class="btn btn-new-order" 
+              (click)="onNewOrder(customer)"
+            >
+              NEW ORDER
+            </button>
+          </td>
+        </tr>
+        
+        <!-- Empty state -->
+        <tr *ngIf="paginatedCustomers.length === 0 && !isLoading">
+          <td colspan="5" class="empty-state">
+            <p>No se encontraron clientes</p>
+            <button *ngIf="searchTerm" class="btn btn-clear-search" (click)="searchTerm=''; onSearch()">
+              Limpiar búsqueda
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && !errorMessage && totalItems > 0" class="pagination-container">
+    <div class="pagination-info">
+      <span>Rows per page</span>
+      <select 
+        [(ngModel)]="itemsPerPage" 
+        (change)="onItemsPerPageChange(itemsPerPage)"
+        class="items-per-page-select"
+      >
+        <option [value]="10">10</option>
+        <option [value]="25">25</option>
+        <option [value]="50">50</option>
+      </select>
+      <span class="pagination-text">
+        {{ startItem }}-{{ endItem }} of {{ totalItems }}
+      </span>
+    </div>
+    <div class="pagination-controls">
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+      >
+        ‹
+      </button>
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)"
+      >
+        ›
+      </button>
+    </div>
+  </div>
+</div>
