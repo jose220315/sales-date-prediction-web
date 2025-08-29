@@ -136,3 +136,11 @@
     </div>
   </div>
 </div>
+
+<!-- Orders Dialog -->
+<app-orders-dialog
+  [customerId]="selectedCustomerId"
+  [customerName]="selectedCustomerName"
+  [isOpen]="isOrdersDialogOpen"
+  (close)="onCloseOrdersDialog()">
+</app-orders-dialog>

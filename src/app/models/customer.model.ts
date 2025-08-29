@@ -1,5 +1,6 @@
 export interface Customer {
   id?: string;
+  customerId: number;
   customerName: string;
   lastOrderDate: string; 
   nextPredictedOrder: string; 

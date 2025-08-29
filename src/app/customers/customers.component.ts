@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Customer } from '../models/customer.model';
 import { CustomerService } from '../services/customer.service';
+import { OrdersDialogComponent } from '../orders/orders-dialog/orders-dialog.component';
 
 @Component({
   selector: 'app-customers',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, OrdersDialogComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss'
 })
@@ -23,6 +24,11 @@ export class CustomersComponent implements OnInit {
   // Estados para la UI
   isLoading: boolean = false;
   errorMessage: string = '';
+
+  // Estados para el diálogo de órdenes
+  isOrdersDialogOpen: boolean = false;
+  selectedCustomerId: number = 0;
+  selectedCustomerName: string = '';
 
   constructor(private customerService: CustomerService) {}
 
@@ -140,19 +146,25 @@ export class CustomersComponent implements OnInit {
   }
 
   onViewOrders(customer: Customer): void {
-    // TODO: Implement view orders modal
-    console.log('View orders for:', customer.customerName);
-    alert(`Viewing orders for ${customer.customerName}`);
+    this.selectedCustomerId = customer.customerId;
+    this.selectedCustomerName = customer.customerName;
+    this.isOrdersDialogOpen = true;
   }
 
   onNewOrder(customer: Customer): void {
-    // TODO: Implement new order modal
     console.log('New order for:', customer.customerName);
     alert(`Creating new order for ${customer.customerName}`);
   }
 
-  // Método para reintentar la carga en caso de error
+  //  reintentar la carga en caso de error
   retryLoad(): void {
     this.loadCustomers();
+  }
+
+  // diálogo de órdenes
+  onCloseOrdersDialog(): void {
+    this.isOrdersDialogOpen = false;
+    this.selectedCustomerId = 0;
+    this.selectedCustomerName = '';
   }
 }

@@ -1,0 +1,135 @@
+<div class="orders-dialog-overlay" *ngIf="isOpen" (click)="onClose()">
+  <div class="orders-dialog" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="dialog-header">
+      <h3>Customer {{ customerName }} - Orders</h3>
+      <button class="close-btn" (click)="onClose()">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Cargando órdenes...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage && !isLoading" class="error-container">
+      <div class="error-message">
+        <h4>⚠️ Error</h4>
+        <p>{{ errorMessage }}</p>
+        <button class="btn btn-retry" (click)="retryLoad()">
+          Reintentar
+        </button>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div *ngIf="!isLoading && !errorMessage" class="dialog-content">
+      <div class="table-container">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th (click)="onSort('orderId')" class="sortable">
+                Order ID
+                <span class="sort-arrow" [class.active]="sortColumn === 'orderId'">
+                  {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th (click)="onSort('requiredDate')" class="sortable">
+                Required Date
+                <span class="sort-arrow" [class.active]="sortColumn === 'requiredDate'">
+                  {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th (click)="onSort('shippedDate')" class="sortable">
+                Shipped Date
+                <span class="sort-arrow" [class.active]="sortColumn === 'shippedDate'">
+                  {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th (click)="onSort('shipName')" class="sortable">
+                Ship Name
+                <span class="sort-arrow" [class.active]="sortColumn === 'shipName'">
+                  {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th (click)="onSort('shipAddress')" class="sortable">
+                Ship Address
+                <span class="sort-arrow" [class.active]="sortColumn === 'shipAddress'">
+                  {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th (click)="onSort('shipCity')" class="sortable">
+                Ship City
+                <span class="sort-arrow" [class.active]="sortColumn === 'shipCity'">
+                  {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of paginatedOrders">
+              <td class="order-id">{{ order.orderId }}</td>
+              <td>{{ formatDate(order.requiredDate) }}</td>
+              <td>{{ formatDate(order.shippedDate) }}</td>
+              <td>{{ order.shipName || 'N/A' }}</td>
+              <td>{{ order.shipAddress || 'N/A' }}</td>
+              <td>{{ order.shipCity || 'N/A' }}</td>
+            </tr>
+            
+            <!-- Empty state -->
+            <tr *ngIf="paginatedOrders.length === 0 && !isLoading">
+              <td colspan="6" class="empty-state">
+                <p>Este cliente no tiene órdenes registradas</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="orders.length > 0" class="pagination-container">
+        <div class="pagination-info">
+          <span>Rows per page</span>
+          <select 
+            [(ngModel)]="itemsPerPage" 
+            (change)="onItemsPerPageChange(itemsPerPage)"
+            class="items-per-page-select"
+          >
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+          </select>
+          <span class="pagination-text">
+            {{ startItem }}-{{ endItem }} of {{ orders.length }}
+          </span>
+        </div>
+        <div class="pagination-controls">
+          <button 
+            class="pagination-btn" 
+            [disabled]="currentPage === 1"
+            (click)="onPageChange(currentPage - 1)"
+          >
+            ‹
+          </button>
+          <button 
+            class="pagination-btn" 
+            [disabled]="currentPage === totalPages"
+            (click)="onPageChange(currentPage + 1)"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dialog-footer">
+      <button class="btn btn-close" (click)="onClose()">
+        CLOSE
+      </button>
+    </div>
+  </div>
+</div>
