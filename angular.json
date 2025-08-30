@@ -67,6 +67,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "localhost",
+            "port": 4200,
+            "liveReload": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "sales-date-prediction-web:build:production"

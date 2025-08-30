@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Customer, PaginationResponse, PaginationParams } from '../models/customer.model';
 import { environment } from '../../environments/environment';
+import { ErrorHandlerUtil } from '../utils/error-handler.util';
 
 @Injectable({
   providedIn: 'root'
@@ -84,40 +85,5 @@ export class CustomerService {
    * Manejo centralizado de errores HTTP
    * @param error
    */
-  private handleError(error: any): Observable<never> {
-    console.error('Error en CustomerService:', error);
-    
-    let errorMessage = 'Ha ocurrido un error inesperado';
-    
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Error del lado del servidor
-      switch (error.status) {
-        case 0:
-          errorMessage = 'No se puede conectar con el servidor. Verifica tu conexión a internet.';
-          break;
-        case 400:
-          errorMessage = 'Solicitud incorrecta. Verifica los datos enviados.';
-          break;
-        case 401:
-          errorMessage = 'No tienes autorización para realizar esta acción.';
-          break;
-        case 403:
-          errorMessage = 'Acceso prohibido.';
-          break;
-        case 404:
-          errorMessage = 'Recurso no encontrado.';
-          break;
-        case 500:
-          errorMessage = 'Error interno del servidor.';
-          break;
-        default:
-          errorMessage = `Error ${error.status}: ${error.message || 'Error desconocido'}`;
-      }
-    }
-    
-    return throwError(() => new Error(errorMessage));
-  }
+  private handleError = ErrorHandlerUtil.createErrorHandler('CustomerService');
 }
