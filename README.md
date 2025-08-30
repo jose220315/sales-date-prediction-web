@@ -1,59 +1,144 @@
-# SalesDatePredictionWeb
+# 📊 Sales Date Prediction Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+Una aplicación web desarrollada en Angular para la gestión de clientes y predicción de fechas de ventas. Esta herramienta permite visualizar información de clientes, gestionar pedidos y generar gráficos de análisis de datos de ventas.
 
-## Development server
+## 🚀 Características Principales
 
-To start a local development server, run:
+- **Gestión de Clientes**: Visualización y búsqueda de clientes con información de pedidos
+- **Predicción de Ventas**: Análisis predictivo de próximas fechas de pedidos por cliente
+- **Gestión de Pedidos**: Creación y visualización detallada de pedidos
+- **Visualización de Datos**: Gráficos interactivos con D3.js para análisis de ventas
+- **Interfaz Responsiva**: Diseño adaptable para diferentes dispositivos
+- **Paginación Avanzada**: Navegación eficiente a través de grandes conjuntos de datos
 
+## 🛠️ Tecnologías Utilizadas
+
+- **Framework**: Angular 19.2.0
+- **Lenguaje**: TypeScript 5.7.2
+- **Visualización**: D3.js 7.9.0
+- **Servidor**: Express.js 4.18.2
+- **Estilos**: SCSS
+- **Testing**: Jasmine y Karma
+- **Renderizado**: Angular SSR (Server-Side Rendering)
+
+## 📋 Requisitos Previos
+
+- Node.js (versión 18 o superior)
+- Angular CLI (versión 19.2.15)
+- npm o yarn
+
+## ⚙️ Instalación y Configuración
+
+1. **Clonar el repositorio**
 ```bash
-ng serve
+git clone https://github.com/jose220315/sales-date-prediction-web.git
+cd sales-date-prediction-web
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. **Instalar dependencias**
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+3. **Configurar variables de entorno**
 ```bash
-ng generate --help
+# Copiar archivos de configuración de ejemplo
+cp src/environments/environment.ts.example src/environments/environment.ts
+cp src/environments/environment.prod.ts.example src/environments/environment.prod.ts
 ```
 
-## Building
+## 🚀 Ejecución del Proyecto
 
-To build the project run:
+### Servidor de Desarrollo
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Para iniciar el servidor de desarrollo local, ejecuta:
 
 ```bash
-ng test
+npm run start
 ```
 
-## Running end-to-end tests
+La aplicación estará disponible en `http://localhost:4200/`. La aplicación se recargará automáticamente cuando modifiques los archivos fuente.
 
-For end-to-end (e2e) testing, run:
+### Modo Watch para Desarrollo
+
+Para construcción continua durante el desarrollo:
 
 ```bash
-ng e2e
+npm run watch
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 📁 Estructura del Proyecto
 
-## Additional Resources
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── customers/          # Gestión de clientes
+│   │   ├── orders/             # Gestión de pedidos
+│   │   │   ├── orders-dialog/  # Diálogo de visualización de pedidos
+│   │   │   └── new-order-dialog/ # Diálogo de creación de pedidos
+│   │   └── chart/              # Componente de gráficos
+│   ├── models/                 # Modelos de datos (Customer, Order)
+│   ├── services/               # Servicios HTTP (API calls)
+│   ├── interceptors/           # Interceptores HTTP
+│   └── environments/           # Configuraciones de entorno
+├── assets/                     # Recursos estáticos
+└── styles.scss                 # Estilos globales
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🔧 Funcionalidades Implementadas
+
+### Gestión de Clientes
+- Listado paginado de clientes
+- Búsqueda por nombre de cliente
+- Ordenamiento por columnas
+- Visualización de última fecha de pedido
+- Predicción de próximo pedido
+
+### Gestión de Pedidos
+- Visualización detallada de pedidos por cliente
+- Creación de nuevos pedidos con múltiples detalles
+- Cálculo automático de totales
+- Validación de formularios
+- Gestión de empleados, transportistas y productos
+
+### Visualización de Datos
+- Gráficos de barras interactivos
+- Entrada de datos personalizable
+- Navegación intuitiva
+
+## 🔗 API y Servicios
+
+La aplicación se comunica con una API backend a través de los siguientes servicios:
+
+- `CustomerService`: Gestión de datos de clientes
+- `OrderService`: Operaciones CRUD de pedidos
+- `EmployeeService`: Información de empleados
+- `ShipperService`: Datos de transportistas
+- `ProductService`: Catálogo de productos
+
+## 🎯 Información de la Prueba
+
+### Objetivo
+Esta aplicación fue desarrollada como parte de una prueba técnica para demostrar habilidades en:
+- Desarrollo frontend con Angular
+- Integración con APIs REST
+- Visualización de datos
+- Diseño de interfaces responsivas
+- Gestión de estado y formularios reactivos
+
+### Características Evaluadas
+- ✅ Arquitectura limpia y modular
+- ✅ Componentización efectiva
+- ✅ Gestión de estado con RxJS
+- ✅ Formularios reactivos con validación
+- ✅ Diseño responsivo y UX intuitiva
+- ✅ Integración con librerías de visualización
+- ✅ Manejo de errores y estados de carga
+- ✅ Tipado fuerte con TypeScript
+
+Este proyecto fue desarrollado como prueba técnica. Para sugerencias o mejoras, puedes contactar al desarrollador.
+
+---
+
+⭐ Si este proyecto te resultó interesante, ¡no dudes en darle una estrella!
