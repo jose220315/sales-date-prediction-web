@@ -1,0 +1,27 @@
+<div class="chart-container">
+  <div class="chart-header">
+    <button (click)="goBack()" class="back-btn">
+      <i class="back-icon">←</i>
+      Volver
+    </button>
+    <h2>Gráfico de Barras</h2>
+  </div>
+  
+  <div class="chart-controls">
+    <div class="input-section">
+      <label for="sourceData">Source Data:</label>
+      <input 
+        id="sourceData"
+        type="text" 
+        [(ngModel)]="sourceData" 
+        placeholder="4,8,15,16"
+        class="data-input"
+      />
+      <button (click)="updateData()" class="update-btn">Update Data</button>
+    </div>
+  </div>
+
+  <div class="chart-wrapper">
+    <div #chartContainer class="chart-svg"></div>
+  </div>
+</div>

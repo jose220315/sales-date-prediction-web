@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Customer } from '../models/customer.model';
 import { CustomerService } from '../services/customer.service';
 import { OrdersDialogComponent } from '../orders/orders-dialog/orders-dialog.component';
@@ -34,7 +35,7 @@ export class CustomersComponent implements OnInit {
   // Estados para el diálogo de nueva orden
   isNewOrderDialogOpen: boolean = false;
 
-  constructor(private customerService: CustomerService) {}
+  constructor(private customerService: CustomerService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCustomers();
@@ -183,5 +184,10 @@ export class CustomersComponent implements OnInit {
     // Opcional: Recargar los datos o mostrar un mensaje de éxito
     this.onCloseNewOrderDialog();
     console.log('Orden creada exitosamente');
+  }
+
+  // Navegar a la gráfica
+  onViewChart(): void {
+    this.router.navigate(['/chart']);
   }
 }

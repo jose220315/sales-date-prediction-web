@@ -9,6 +9,9 @@
     color: #333;
     padding: 20px;
     border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     
     h2 {
       margin: 0;
@@ -249,6 +252,33 @@
 
       &:hover {
         background-color: #545b62;
+      }
+    }
+
+    &.btn-chart {
+      background-color: #5bc0de;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+
+      .chart-icon {
+        font-size: 14px;
+      }
+
+      &:hover {
+        background-color: #46b5d1;
+      }
+
+      &:active {
+        transform: translateY(1px);
       }
     }
   }

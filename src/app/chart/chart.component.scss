@@ -1,0 +1,181 @@
+.chart-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.chart-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .back-btn {
+    position: absolute;
+    left: 0;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+    
+    .back-icon {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    &:hover {
+      background-color: #545b62;
+    }
+    
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+  
+  h2 {
+    color: #4a4a4a;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+.chart-controls {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  
+  label {
+    font-weight: 500;
+    color: #4a4a4a;
+    min-width: 120px;
+  }
+  
+  .data-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #5bc0de;
+      box-shadow: 0 0 0 3px rgba(91, 192, 222, 0.1);
+    }
+    
+    &::placeholder {
+      color: #6c757d;
+    }
+  }
+  
+  .update-btn {
+    background-color: #5bc0de;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+    &:hover {
+      background-color: #46b5d1;
+    }
+    
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+.chart-wrapper {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.chart-svg {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+// Estilos para el SVG y elementos del gráfico
+:host ::ng-deep {
+  .bar {
+    transition: opacity 0.3s ease;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  .axis {
+    font-size: 12px;
+    
+    path,
+    line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    
+    text {
+      fill: #4a4a4a;
+    }
+  }
+}
+
+// Responsivo
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 15px;
+  }
+  
+  .input-section {
+    flex-direction: column;
+    align-items: stretch;
+    
+    label {
+      min-width: auto;
+      margin-bottom: 5px;
+    }
+    
+    .data-input,
+    .update-btn {
+      width: 100%;
+    }
+  }
+  
+  .chart-wrapper {
+    padding: 15px;
+    overflow-x: auto;
+  }
+}
