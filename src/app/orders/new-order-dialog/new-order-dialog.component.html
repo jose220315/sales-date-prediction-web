@@ -1,0 +1,289 @@
+<div class="modal-overlay" [class.show]="isOpen" (click)="onClose()">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ customerName }} - Nueva Orden</h3>
+      <button type="button" class="btn-close" (click)="onClose()" aria-label="Cerrar">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Loading State -->
+      <div *ngIf="isLoadingData" class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando datos del formulario...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage" class="alert alert-error">
+        <span>{{ errorMessage }}</span>
+        <button *ngIf="!isLoadingData && !employees.length" type="button" class="btn btn-sm" (click)="loadFormData()">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success">
+        <span>{{ successMessage }}</span>
+      </div>
+
+      <!-- Form -->
+      <form #orderFormRef="ngForm" id="orderForm" (ngSubmit)="onSubmit(orderFormRef)" *ngIf="!isLoadingData && employees.length">
+        
+        <!-- Order Section -->
+        <div class="form-section">
+          <h4>Orden</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="employee">Empleado*</label>
+              <select 
+                id="employee" 
+                name="employee" 
+                [(ngModel)]="orderForm.empId" 
+                required 
+                class="form-control">
+                <option value="0">Seleccione un empleado</option>
+                <option *ngFor="let employee of employees" [value]="employee.empId">
+                  {{ employee.fullName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="shipper">Shipper*</label>
+              <select 
+                id="shipper" 
+                name="shipper" 
+                [(ngModel)]="orderForm.shipperId" 
+                required 
+                class="form-control">
+                <option value="0">Seleccione un shipper</option>
+                <option *ngFor="let shipper of shippers" [value]="shipper.shipperId">
+                  {{ shipper.companyName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="shipName">Ship Name*</label>
+            <input 
+              type="text" 
+              id="shipName" 
+              name="shipName" 
+              [(ngModel)]="orderForm.shipName" 
+              required 
+              class="form-control"
+              placeholder="Nombre del destinatario">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="shipAddress">Ship Address*</label>
+              <input 
+                type="text" 
+                id="shipAddress" 
+                name="shipAddress" 
+                [(ngModel)]="orderForm.shipAddress" 
+                required 
+                class="form-control"
+                placeholder="Dirección de envío">
+            </div>
+
+            <div class="form-group">
+              <label for="shipCity">Ship City*</label>
+              <input 
+                type="text" 
+                id="shipCity" 
+                name="shipCity" 
+                [(ngModel)]="orderForm.shipCity" 
+                required 
+                class="form-control"
+                placeholder="Ciudad">
+            </div>
+
+            <div class="form-group">
+              <label for="shipCountry">Ship Country*</label>
+              <input 
+                type="text" 
+                id="shipCountry" 
+                name="shipCountry" 
+                [(ngModel)]="orderForm.shipCountry" 
+                required 
+                class="form-control"
+                placeholder="País">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="orderDate">Order Date*</label>
+              <input 
+                type="date" 
+                id="orderDate" 
+                name="orderDate" 
+                [(ngModel)]="orderForm.orderDate" 
+                required 
+                class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="requiredDate">Required Date*</label>
+              <input 
+                type="date" 
+                id="requiredDate" 
+                name="requiredDate" 
+                [(ngModel)]="orderForm.requiredDate" 
+                required 
+                class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="shippedDate">Shipped Date</label>
+              <input 
+                type="date" 
+                id="shippedDate" 
+                name="shippedDate" 
+                [(ngModel)]="orderForm.shippedDate" 
+                class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="freight">$ Freight*</label>
+            <input 
+              type="number" 
+              id="freight" 
+              name="freight" 
+              [(ngModel)]="orderForm.freight" 
+              required 
+              min="0" 
+              step="0.01" 
+              class="form-control"
+              placeholder="0.00">
+          </div>
+        </div>
+
+        <!-- Order Details Section -->
+        <div class="form-section">
+          <div class="section-header">
+            <h4>Detalles de la Orden</h4>
+            <button type="button" class="btn btn-sm btn-success" (click)="addOrderDetail()">
+              + Agregar Producto
+            </button>
+          </div>
+
+          <div class="order-details" *ngIf="orderForm.details && orderForm.details.length">
+            <div 
+              class="detail-row" 
+              *ngFor="let detail of orderForm.details; let i = index">
+              
+              <div class="detail-header">
+                <span class="detail-number">Producto {{ i + 1 }}</span>
+                <button 
+                  type="button" 
+                  class="btn-remove" 
+                  (click)="removeOrderDetail(i)" 
+                  [disabled]="orderForm.details!.length <= 1">
+                  ×
+                </button>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label [for]="'product-' + i">Product*</label>
+                  <select 
+                    [id]="'product-' + i"
+                    [name]="'product-' + i" 
+                    [(ngModel)]="detail.productId" 
+                    (change)="onProductChange(i)"
+                    required 
+                    class="form-control">
+                    <option value="0">Seleccione un producto</option>
+                    <option *ngFor="let product of products" [value]="product.productId">
+                      {{ product.productName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label [for]="'unitPrice-' + i">$ Unit Price*</label>
+                  <input 
+                    type="number" 
+                    [id]="'unitPrice-' + i"
+                    [name]="'unitPrice-' + i" 
+                    [(ngModel)]="detail.unitPrice" 
+                    required 
+                    min="0" 
+                    step="0.01" 
+                    class="form-control"
+                    placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                  <label [for]="'quantity-' + i">Quantity*</label>
+                  <input 
+                    type="number" 
+                    [id]="'quantity-' + i"
+                    [name]="'quantity-' + i" 
+                    [(ngModel)]="detail.qty" 
+                    required 
+                    min="1" 
+                    class="form-control"
+                    placeholder="1">
+                </div>
+
+                <div class="form-group">
+                  <label [for]="'discount-' + i">Discount*</label>
+                  <input 
+                    type="number" 
+                    [id]="'discount-' + i"
+                    [name]="'discount-' + i" 
+                    [(ngModel)]="detail.discount" 
+                    required 
+                    min="0" 
+                    max="100" 
+                    step="0.01" 
+                    class="form-control"
+                    placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                  <label>Total</label>
+                  <div class="total-display">
+                    ${{ calculateDetailTotal(detail) | number:'1.2-2' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Total -->
+          <div class="order-total" *ngIf="hasValidDetails">
+            <div class="total-row">
+              <span class="total-label">Total de la Orden:</span>
+              <span class="total-amount">${{ orderTotal | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer" *ngIf="!isLoadingData && employees.length">
+      <button type="button" class="btn btn-secondary" (click)="onClose()" [disabled]="isSubmitting">
+        Cerrar
+      </button>
+      <button 
+        type="submit" 
+        form="orderForm"
+        class="btn btn-primary" 
+        [disabled]="!isFormValid || isSubmitting">
+        <span *ngIf="isSubmitting" class="spinner-sm"></span>
+        {{ isSubmitting ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

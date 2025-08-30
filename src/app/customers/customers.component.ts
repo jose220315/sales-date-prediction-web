@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Customer } from '../models/customer.model';
 import { CustomerService } from '../services/customer.service';
 import { OrdersDialogComponent } from '../orders/orders-dialog/orders-dialog.component';
+import { NewOrderDialogComponent } from '../orders/new-order-dialog/new-order-dialog.component';
 
 @Component({
   selector: 'app-customers',
-  imports: [CommonModule, FormsModule, OrdersDialogComponent],
+  imports: [CommonModule, FormsModule, OrdersDialogComponent, NewOrderDialogComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss'
 })
@@ -29,6 +30,9 @@ export class CustomersComponent implements OnInit {
   isOrdersDialogOpen: boolean = false;
   selectedCustomerId: number = 0;
   selectedCustomerName: string = '';
+  
+  // Estados para el diálogo de nueva orden
+  isNewOrderDialogOpen: boolean = false;
 
   constructor(private customerService: CustomerService) {}
 
@@ -152,8 +156,9 @@ export class CustomersComponent implements OnInit {
   }
 
   onNewOrder(customer: Customer): void {
-    console.log('New order for:', customer.customerName);
-    alert(`Creating new order for ${customer.customerName}`);
+    this.selectedCustomerId = customer.customerId;
+    this.selectedCustomerName = customer.customerName;
+    this.isNewOrderDialogOpen = true;
   }
 
   //  reintentar la carga en caso de error
@@ -166,5 +171,17 @@ export class CustomersComponent implements OnInit {
     this.isOrdersDialogOpen = false;
     this.selectedCustomerId = 0;
     this.selectedCustomerName = '';
+  }
+
+  onCloseNewOrderDialog(): void {
+    this.isNewOrderDialogOpen = false;
+    this.selectedCustomerId = 0;
+    this.selectedCustomerName = '';
+  }
+
+  onOrderCreated(): void {
+    // Opcional: Recargar los datos o mostrar un mensaje de éxito
+    this.onCloseNewOrderDialog();
+    console.log('Orden creada exitosamente');
   }
 }

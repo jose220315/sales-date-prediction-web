@@ -144,3 +144,12 @@
   [isOpen]="isOrdersDialogOpen"
   (close)="onCloseOrdersDialog()">
 </app-orders-dialog>
+
+<!-- New Order Dialog -->
+<app-new-order-dialog
+  [customerId]="selectedCustomerId"
+  [customerName]="selectedCustomerName"
+  [isOpen]="isNewOrderDialogOpen"
+  (close)="onCloseNewOrderDialog()"
+  (orderCreated)="onOrderCreated()">
+</app-new-order-dialog>

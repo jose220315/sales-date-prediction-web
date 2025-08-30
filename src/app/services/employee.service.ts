@@ -1,45 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ClientOrderSummary, OrderRead, CreateOrderCommand } from '../models/order.model';
+import { catchError, map } from 'rxjs/operators';
+import { Employee } from '../models/order.model';
+import { PaginationResponse, PaginationParams } from '../models/customer.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class EmployeeService {
   
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/Employees`;
 
   constructor(private http: HttpClient) { }
 
   /**
-   * Obtiene las órdenes de un cliente
-   * @param customerId 
+   * Obtiene todos los empleados
    */
-  getCustomerOrders(customerId: number): Observable<ClientOrderSummary[]> {
-    return this.http.get<ClientOrderSummary[]>(`${this.apiUrl}/Customers/${customerId}/orders`).pipe(
+  getEmployees(): Observable<Employee[]> {
+    return this.getEmployeesPaginated({ pageNumber: 1, pageSize: 1000 }).pipe(
+      map(response => response.data),
       catchError(this.handleError)
     );
   }
 
   /**
-   * Obtiene los detalles de una orden
-   * @param orderId 
+   * Obtiene empleados con paginación
    */
-  getOrderDetails(orderId: number): Observable<OrderRead> {
-    return this.http.get<OrderRead>(`${this.apiUrl}/Orders/${orderId}`).pipe(
-      catchError(this.handleError)
-    );
-  }
+  getEmployeesPaginated(pagination?: PaginationParams): Observable<PaginationResponse<Employee>> {
+    let params = new HttpParams();
+    
+    if (pagination?.pageNumber) {
+      params = params.set('pageNumber', pagination.pageNumber.toString());
+    }
+    
+    if (pagination?.pageSize) {
+      params = params.set('pageSize', pagination.pageSize.toString());
+    }
 
-  /**
-   * Crea una nueva orden
-   * @param order 
-   */
-  createOrder(order: CreateOrderCommand): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/Orders`, order).pipe(
+    return this.http.get<PaginationResponse<Employee>>(this.apiUrl, { params }).pipe(
       catchError(this.handleError)
     );
   }
@@ -49,7 +49,7 @@ export class OrderService {
    * @param error
    */
   private handleError(error: any): Observable<never> {
-    console.error('Error en OrderService:', error);
+    console.error('Error en EmployeeService:', error);
     
     let errorMessage = 'Ha ocurrido un error inesperado';
     
@@ -72,7 +72,7 @@ export class OrderService {
           errorMessage = 'Acceso prohibido.';
           break;
         case 404:
-          errorMessage = 'Cliente no encontrado o no tiene órdenes.';
+          errorMessage = 'Empleados no encontrados.';
           break;
         case 500:
           errorMessage = 'Error interno del servidor.';
