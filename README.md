@@ -59,32 +59,6 @@ npm run start
 
 La aplicación estará disponible en `http://localhost:4200/`. La aplicación se recargará automáticamente cuando modifiques los archivos fuente.
 
-### Modo Watch para Desarrollo
-
-Para construcción continua durante el desarrollo:
-
-```bash
-npm run watch
-```
-
-## 📁 Estructura del Proyecto
-
-```
-src/
-├── app/
-│   ├── components/
-│   │   ├── customers/          # Gestión de clientes
-│   │   ├── orders/             # Gestión de pedidos
-│   │   │   ├── orders-dialog/  # Diálogo de visualización de pedidos
-│   │   │   └── new-order-dialog/ # Diálogo de creación de pedidos
-│   │   └── chart/              # Componente de gráficos
-│   ├── models/                 # Modelos de datos (Customer, Order)
-│   ├── services/               # Servicios HTTP (API calls)
-│   ├── interceptors/           # Interceptores HTTP
-│   └── environments/           # Configuraciones de entorno
-├── assets/                     # Recursos estáticos
-└── styles.scss                 # Estilos globales
-```
 
 ## 🔧 Funcionalidades Implementadas
 
